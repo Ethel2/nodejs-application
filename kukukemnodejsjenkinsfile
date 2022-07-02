@@ -1,0 +1,43 @@
+pipeline{
+    agent any
+
+    stages{
+        stage ("1.gitclone"){
+            steps{
+                sh "echo git cloning"
+                git "https://github.com/Ethel2/nodejs-application.git"
+            }
+        }
+       stage ("2.building application"){
+           steps {
+               sh "echo building application"
+               sh "npm install"
+       } 
+    }
+        stage ("3. code quality testing"){
+            steps{
+                sh "echo code quality testing"
+                sh "npm run sonar"
+            
+            }
+        }
+        stage ("4.deploy to nexus"){
+            steps{
+                sh "echo backing up artifact into nexus"
+                sh "npm publish"
+            }
+        }
+        stage ("5.deploy to tomcat"){
+            steps{
+                sh "echo deploying to tomcat"
+                sh "npm start"
+            }
+        }
+        stage ("6. email notification"){
+            steps {
+                sh "echo sending email notification"
+                emailext body: 'This application has been built successfully', subject: 'Build successful', to: 'kukukem@gmail.com'
+            }
+        }
+    }
+}
