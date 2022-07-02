@@ -27,12 +27,7 @@ pipeline{
                 sh "npm publish"
             }
         }
-        stage ("5.deploy to tomcat"){
-            steps{
-                sh "echo deploying to tomcat"
-                sh "npm start"
-            }
-        }
+        
         stage ("6. email notification"){
             steps {
                 sh "echo sending email notification"
